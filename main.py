@@ -10,7 +10,7 @@ soup = BeautifulSoup(urlopen(sys.argv[1]), 'html.parser')
 
 artist_name = soup.find("div", { "id": "name-section" }).find("a").text
 album_title = soup.find("div", { "id": "name-section" }).find("h2").text.strip()
-directory_name = ('%s - %s' % (album_title, artist_name)).replace('/', ':').replace('|', '-')
+directory_name = ('%s - %s' % (album_title, artist_name)).replace('/', ' - ').replace('|', ' - ').replace('\u200b', '')
 print(directory_name)
 
 # mkdir
@@ -29,7 +29,7 @@ tracks = json.loads(soup.find(attrs={ "data-tralbum": True })['data-tralbum'])
 
 # download tracks
 for x in tracks["trackinfo"]:
-  song_path = os.path.join(final_directory, "%s.mp3" % x["title"])
+  song_path = os.path.join(final_directory, "%s.mp3" % x["title"].replace('/', ' '))
   urlretrieve(x['file']['mp3-128'], song_path)
   audio = mutagen.File(song_path)
   try:
