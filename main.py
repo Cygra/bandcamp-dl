@@ -32,7 +32,10 @@ for x in tracks["trackinfo"]:
   song_path = os.path.join(final_directory, "%s.mp3" % x["title"])
   urlretrieve(x['file']['mp3-128'], song_path)
   audio = mutagen.File(song_path)
-  audio.add_tags()
+  try:
+    audio.add_tags()
+  except:
+    pass
   audio["TRCK"] = TRCK(encoding=3, text=str(x["track_num"]))
   audio["TPE1"] = TPE1(encoding=3, text=artist_name)
   audio["TALB"] = TALB(encoding=3, text=album_title)
